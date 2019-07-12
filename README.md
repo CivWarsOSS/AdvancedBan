@@ -1,8 +1,9 @@
 # AdvancedBan
 
-
-Bukkit- & BungeeCord-Plugin at once <br>
-Check out our [Spigot-Page](https://www.spigotmc.org/resources/advancedban.8695/) for more  information!
+This is a fork of AdvancedBan, original plugin links below<br>
+Bukkit- & BungeeCord- & Velocity-Plugin at once <br>
+Check out our [Spigot-Page](https://www.spigotmc.org/resources/advancedban.8695/) for more  information!<br>
+Check out our [GitHub-page](https://github.com/DevLeoko/AdvancedBan)!
 
 ![Minecraft Version 1.7-1.12](https://img.shields.io/badge/supports%20minecraft%20versions-1.7--1.12-brightgreen.svg)
 ![license GLP-3.0](https://img.shields.io/badge/license-GLP--3.0-lightgrey.svg)
@@ -16,7 +17,7 @@ AdvancedBan is an All-In-One Punishment-System with warns, tempwarns, mutes, tem
 There is also a PlayerHistory so you can see the players past punishments and 
 the plugin has configurable Time & Message-Layouts which automatically calculate and increase the Punishment-Time for certain reasons.
 AdvancedBan provides also a full Message-File so you can change and translate all messages & a detailed config-file with a lot of useful settings.
-This is a BungeeCord & Bukkit/Spigot-Plugin in one and it supports MySQL and Local-File-Storage.
+This is a BungeeCord & Bukkit/Spigot & Velocity-Plugin in one and it supports MySQL and Local-File-Storage.
 
 ## API
 To use the API just add the AdvancedBan.jar to your BuildPath and as a dependency in your Plugin.yml
