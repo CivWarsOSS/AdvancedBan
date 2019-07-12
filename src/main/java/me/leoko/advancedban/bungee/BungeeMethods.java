@@ -1,10 +1,5 @@
 package me.leoko.advancedban.bungee;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.imaginarycode.minecraft.redisbungee.RedisBungee;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,12 +9,18 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.imaginarycode.minecraft.redisbungee.RedisBungee;
+
 import me.leoko.advancedban.MethodInterface;
 import me.leoko.advancedban.Universal;
 import me.leoko.advancedban.bungee.event.PunishmentEvent;
 import me.leoko.advancedban.bungee.event.RevokePunishmentEvent;
 import me.leoko.advancedban.bungee.listener.CommandReceiverBungee;
-import me.leoko.advancedban.manager.DatabaseManager;
 import me.leoko.advancedban.manager.PunishmentManager;
 import me.leoko.advancedban.manager.UUIDManager;
 import me.leoko.advancedban.utils.Punishment;
@@ -31,7 +32,6 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
-import org.bstats.bungeecord.Metrics;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 23.07.2016.
@@ -99,12 +99,6 @@ public class BungeeMethods implements MethodInterface {
     }
 
     @Override
-    public String[] getKeys(Object file, String path) {
-        //TODO not sure if it returns all keys or just the first :/
-        return ((Configuration) file).getSection(path).getKeys().toArray(new String[0]);
-    }
-
-    @Override
     public Object getConfig() {
         return config;
     }
@@ -117,12 +111,6 @@ public class BungeeMethods implements MethodInterface {
     @Override
     public Object getLayouts() {
         return layouts;
-    }
-
-    @Override
-    public void setupMetrics() {
-        Metrics metrics = new Metrics((Plugin) getPlugin());
-        metrics.addCustomChart(new Metrics.SimplePie("MySQL", () -> DatabaseManager.get().isUseMySQL() ? "yes" : "no"));
     }
 
     @Override
@@ -142,7 +130,7 @@ public class BungeeMethods implements MethodInterface {
 
     @Override
     public void sendMessage(Object player, String msg) {
-        ((CommandSender) player).sendMessage(msg);
+        ((CommandSender) player).sendMessage(TextComponent.fromLegacyText(msg));
     }
 
     @Override
@@ -176,7 +164,7 @@ public class BungeeMethods implements MethodInterface {
         if (Universal.get().useRedis()) {
             RedisBungee.getApi().sendChannelMessage("AdvancedBan", "kick " + player + " " + reason);
         } else {
-            ProxyServer.getInstance().getPlayer(player).disconnect(reason);
+            ProxyServer.getInstance().getPlayer(player).disconnect(TextComponent.fromLegacyText(reason));
         }
     }
 
@@ -378,7 +366,8 @@ public class BungeeMethods implements MethodInterface {
         ((Plugin) getPlugin()).getProxy().getPluginManager().callEvent(new RevokePunishmentEvent(punishment, massClear));
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean isOnlineMode() {
         return ProxyServer.getInstance().getConfig().isOnlineMode();
     }
@@ -407,4 +396,19 @@ public class BungeeMethods implements MethodInterface {
     public boolean isUnitTesting() {
         return false;
     }
+    
+	@Override
+	public File getConfigFile() {
+		return configFile;
+	}
+
+	@Override
+	public File getMessagesFile() {
+		return messageFile;
+	}
+
+	@Override
+	public File getLayoutsFile() {
+		return layoutFile;
+	}
 }

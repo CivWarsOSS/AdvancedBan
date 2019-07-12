@@ -342,7 +342,7 @@ public class CommandManager {
                     mi.sendMessage(sender, "  §cVersion §8• §7" + mi.getVersion());
                     mi.sendMessage(sender, "  §cLicense §8• §7Public");
                     mi.sendMessage(sender, "  §cStorage §8• §7" + (DatabaseManager.get().isUseMySQL() ? "MySQL (external)" : "HSQLDB (local)"));
-                    mi.sendMessage(sender, "  §cServer §8• §7" + (Universal.get().isBungee() ? "Bungeecord" : "Spigot/Bukkit"));
+                    mi.sendMessage(sender, "  §cServer §8• §7" + (Universal.get().isBungee() ? "Bungeecord" : Universal.get().isVelocity() ? "Velocity" :"Spigot/Bukkit"));
                     if (Universal.get().isBungee()) {
                         mi.sendMessage(sender, "  §cRedisBungee §8• §7" + (Universal.get().useRedis() ? "true" : "false"));
                     }

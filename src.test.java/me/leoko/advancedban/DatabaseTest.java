@@ -1,12 +1,13 @@
 package me.leoko.advancedban;
 
-import me.leoko.advancedban.manager.DatabaseManager;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import me.leoko.advancedban.manager.DatabaseManager;
 
 /**
  * Created by Leo on 07.08.2017.

@@ -1,17 +1,16 @@
 package me.leoko.advancedban.manager;
 
-import me.leoko.advancedban.MethodInterface;
-import me.leoko.advancedban.Universal;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
+
+import me.leoko.advancedban.MethodInterface;
+import me.leoko.advancedban.Universal;
 
 public class UUIDManager {
     private static UUIDManager instance = null;
@@ -28,7 +27,7 @@ public class UUIDManager {
             if(!mi.isOnlineMode()) {
                 mode = FetcherMode.DISABLED;
             }else{
-                if(Universal.get().isBungee()){
+                if(Universal.get().isBungee() || Universal.get().isVelocity()){
                     mode = FetcherMode.MIXED;
                 }else{
                     mode = FetcherMode.INTERN;
@@ -119,21 +118,35 @@ public class UUIDManager {
     }
 
     private String askAPI(String url, String name, String key) throws IOException {
-        HttpURLConnection request = (HttpURLConnection) new URL(url.replaceAll("%NAME%", name).replaceAll("%TIMESTAMP%", new Date().getTime() + "")).openConnection();
+    	if(url == null || name == null || key == null) {
+    		System.out.println("!! Configuration error using test url");
+    		url = "https://api.mojang.com/users/profiles/minecraft/%NAME%";
+    		key = "id";
+    		
+    		if(Universal.get().getMethods().contains(Universal.get().getMethods().getConfig(), "UUID-Fetcher.REST-API.URL")){
+    			Universal.get().debug("UUID-Fetcher.REST-API.URL was found in the config,");
+    			Universal.get().debug("" + Universal.get().getMethods().getString(Universal.get().getMethods().getConfig(), "UUID-Fetcher.REST-API.URL", "null"));
+    		}else {
+    			Universal.get().debug("UUID-Fetcher.REST-API.URL was not found in the config,");
+    		}
+    	}
+    	
+    	HttpURLConnection request = (HttpURLConnection) new URL(url.replaceAll("%NAME%", name)).openConnection();
         request.connect();
 
         String uuid = mi.parseJSON(new InputStreamReader(request.getInputStream()), key);
-
+        
         if (uuid == null) {
             System.out.println("!! Failed fetching UUID of " + name);
             System.out.println("!! Could not find key '" + key + "' in the servers response");
             System.out.println("!! Response: " + request.getResponseMessage());
-        } else {
+        }else {
             if (activeUUIDs.containsKey(name)) {
                 activeUUIDs.remove(name);
             }
             activeUUIDs.put(name, uuid);
         }
+        
         return uuid;
     }
 

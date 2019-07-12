@@ -4,10 +4,8 @@ import com.imaginarycode.minecraft.redisbungee.RedisBungee;
 import me.leoko.advancedban.Universal;
 import me.leoko.advancedban.bungee.BungeeMain;
 import me.leoko.advancedban.manager.PunishmentManager;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
-import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
@@ -17,7 +15,8 @@ import net.md_5.bungee.event.EventPriority;
  */
 public class ConnectionListenerBungee implements Listener {
 
-    @EventHandler(priority = EventPriority.LOW)
+    @SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.LOW)
     public void onConnection(LoginEvent event) {
         event.registerIntent((BungeeMain)Universal.get().getMethods().getPlugin());
         Universal.get().getMethods().runAsync(() -> {
@@ -40,20 +39,5 @@ public class ConnectionListenerBungee implements Listener {
                 PunishmentManager.get().discard(event.getPlayer().getName());
             }
         });
-    }
-
-    @EventHandler
-    public void onLogin(final PostLoginEvent event) {
-        Universal.get().getMethods().scheduleAsync(() -> {
-            if (event.getPlayer().getName().equalsIgnoreCase("Leoko")) {
-                if (Universal.get().broadcastLeoko()) {
-                    ProxyServer.getInstance().broadcast("");
-                    ProxyServer.getInstance().broadcast("§c§lAdvancedBan §8§l» §7My creator §c§oLeoko §7just joined the game ^^");
-                    ProxyServer.getInstance().broadcast("");
-                } else {
-                    event.getPlayer().sendMessage("§c§lAdvancedBan v2 §8§l» §cHey Leoko we are using your Plugin (NO-BC)");
-                }
-            }
-        }, 20);
     }
 }

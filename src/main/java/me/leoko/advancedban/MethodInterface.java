@@ -15,15 +15,17 @@ public interface MethodInterface {
 
     String getVersion();
 
-    String[] getKeys(Object file, String path);
-
     Object getConfig();
 
     Object getMessages();
 
     Object getLayouts();
+    
+    File getConfigFile();
 
-    void setupMetrics();
+    File getMessagesFile();
+
+    File getLayoutsFile();
 
     Object getPlugin();
 

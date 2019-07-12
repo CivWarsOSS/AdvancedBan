@@ -1,19 +1,20 @@
 package me.leoko.advancedban;
 
-import com.google.common.base.Charsets;
-import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import org.apache.commons.io.FileUtils;
+
+import com.google.common.base.Charsets;
+import com.google.gson.Gson;
+
 import me.leoko.advancedban.bungee.BungeeMethods;
 import me.leoko.advancedban.manager.DatabaseManager;
 import me.leoko.advancedban.manager.LogManager;
@@ -22,8 +23,7 @@ import me.leoko.advancedban.manager.UUIDManager;
 import me.leoko.advancedban.manager.UpdateManager;
 import me.leoko.advancedban.utils.InterimData;
 import me.leoko.advancedban.utils.Punishment;
-import net.md_5.bungee.api.ChatColor;
-import org.apache.commons.io.FileUtils;
+import me.leoko.advancedban.velocity.VelocityMethods;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 23.07.2016.
@@ -55,7 +55,6 @@ public class Universal {
             debug(ex.getMessage());
         }
 
-        mi.setupMetrics();
         PunishmentManager.get().setup();
 
         mi.setCommandExecutor("advancedban");
@@ -83,14 +82,6 @@ public class Universal {
         mi.setCommandExecutor("systemprefs");
         mi.setCommandExecutor("unpunish");
 
-        String upt = "You have the newest version";
-        String response = getFromURL("https://api.spigotmc.org/legacy/update.php?resource=8695");
-        if (response == null) {
-            upt = "Failed to check for updates :(";
-        } else if ((!mi.getVersion().startsWith(response))) {
-            upt = "There is a new version available! [" + response + "]";
-        }
-
         if (mi.getBoolean(mi.getConfig(), "DetailedEnableMessage", true)) {
             mi.log("\n \n&8[]=====[&7Enabling AdvancedBan&8]=====[]"
                     + "\n&8| &cInformation:"
@@ -99,12 +90,8 @@ public class Universal {
                     + "\n&8|   &cVersion: &7" + mi.getVersion()
                     + "\n&8|   &cStorage: &7" + (DatabaseManager.get().isUseMySQL() ? "MySQL (external)" : "HSQLDB (local)")
                     + "\n&8| &cSupport:"
-                    + "\n&8|   &cSkype: &7Leoko33"
-                    + "\n&8|   &cMail: &7Leoko4433@gmail.com"
-                    + "\n&8|   &cGithub: &7https://github.com/DevLeoko/AdvancedBan/issues"
-                    + "\n&8|   &cDiscord: &7https://discord.gg/ycDG6rS"
-                    + "\n&8| &cUpdate:"
-                    + "\n&8|   &7" + upt
+                    + "\n&8|   &cMail: &7ironboundred@gmail.com"
+                    + "\n&8|   &cGithub: &7https://github.com/ironboundred/AdvancedBan"
                     + "\n&8[]================================[]&r\n ");
         } else {
             mi.log("&cEnabling AdvancedBan on Version &7" + mi.getVersion());
@@ -120,13 +107,11 @@ public class Universal {
                     + "\n&8| &cInformation:"
                     + "\n&8|   &cName: &7AdvancedBan"
                     + "\n&8|   &cDeveloper: &7Leoko"
-                    + "\n&8|   &cVersion: &7" + getMethods().getVersion()
+                    + "\n&8|   &cVersion: &7" + mi.getVersion()
                     + "\n&8|   &cStorage: &7" + (DatabaseManager.get().isUseMySQL() ? "MySQL (external)" : "HSQLDB (local)")
                     + "\n&8| &cSupport:"
-                    + "\n&8|   &cSkype: &7Leoko33"
-                    + "\n&8|   &cMail: &7Leoko4433@gmail.com"
-                    + "\n&8|   &cGithub: &7https://github.com/DevLeoko/AdvancedBan/issues"
-                    + "\n&8|   &cDiscord: &7https://discord.gg/ycDG6rS"
+                    + "\n&8|   &cMail: &7ironboundred@gmail.com"
+                    + "\n&8|   &cGithub: &7https://github.com/ironboundred/AdvancedBan"
                     + "\n&8[]================================[]&r\n ");
         } else {
             mi.log("&cDisabling AdvancedBan on Version &7" + getMethods().getVersion());
@@ -141,9 +126,13 @@ public class Universal {
     public MethodInterface getMethods() {
         return mi;
     }
-
+    
     public boolean isBungee() {
         return mi instanceof BungeeMethods;
+    }
+    
+    public boolean isVelocity() {
+        return mi instanceof VelocityMethods;
     }
 
     public String getFromURL(String surl) {
@@ -181,20 +170,6 @@ public class Universal {
             }
         }
         return false;
-    }
-
-    public boolean broadcastLeoko() {
-        File readme = new File(getMethods().getDataFolder(), "readme.txt");
-        if (!readme.exists()) {
-            return true;
-        }
-        try {
-            if (Files.readAllLines(Paths.get(readme.getPath()), Charset.defaultCharset()).get(0).equalsIgnoreCase("I don't want that there will be any message when the dev of this plugin joins the server! I want this even though the plugin is 100% free and the join-message is the only reward for the Dev :(")) {
-                return false;
-            }
-        } catch (IOException ignore) {
-        }
-        return true;
     }
 
     public String callConnection(String name, String ip) {
@@ -278,7 +253,7 @@ public class Universal {
             logManager.checkLastLog(false);
         }
         try {
-            FileUtils.writeStringToFile(debugFile, "[" + new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis()) + "] " + ChatColor.stripColor(msg.toString()) + "\n", Charsets.UTF_8, true);
+            FileUtils.writeStringToFile(debugFile, "[" + new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis()) + "] " + msg.toString() + "\n", Charsets.UTF_8, true);
         } catch (IOException ex) {
             System.out.print("An error has ocurred writing to 'latest.log' file.");
             System.out.print(ex.getMessage());

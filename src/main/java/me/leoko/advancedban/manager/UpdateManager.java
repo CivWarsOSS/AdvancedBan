@@ -27,7 +27,7 @@ public class UpdateManager {
 
         if (!mi.contains(mi.getMessages(), "Check.MuteReason")) {
             try {
-                File file = new File(mi.getDataFolder(), "Messages.yml");
+                File file = mi.getMessagesFile();
                 List<String> lines = FileUtils.readLines(file, Charset.defaultCharset());
                 int index = lines.indexOf("Check:");
                 lines.add(index + 1, "  MuteReason: \"  &cReason &8\\xbb &7%REASON%\"");
@@ -38,7 +38,7 @@ public class UpdateManager {
         }
         if (!mi.contains(mi.getMessages(), "Check.BanReason")) {
             try {
-                File file = new File(mi.getDataFolder(), "Messages.yml");
+                File file = mi.getMessagesFile();
                 List<String> lines = FileUtils.readLines(file, Charset.defaultCharset());
                 int index = lines.indexOf("Check:");
                 lines.add(index + 1, "  BanReason: \"  &cReason &8\\xbb &7%REASON%\"");
@@ -49,7 +49,7 @@ public class UpdateManager {
         }
         if (!mi.contains(mi.getMessages(), "Tempipban")) {
             try {
-                FileUtils.writeLines(new File(mi.getDataFolder(), "Messages.yml"), Arrays.asList(
+                FileUtils.writeLines(mi.getMessagesFile(), Arrays.asList(
                         "",
                         "Tempipban:",
                         "  Usage: \"&cUsage &8\\xbb &7&o/tempipban [Name/IP] [Xmo/Xd/Xh/Xm/Xs/#TimeLayout] [Reason/@Layout]\"",
@@ -78,7 +78,7 @@ public class UpdateManager {
             }
         }
         try {
-            File file = new File(mi.getDataFolder(), "config.yml");
+            File file = mi.getConfigFile();
             List<String> lines = FileUtils.readLines(file, Charset.defaultCharset());
             if (!mi.contains(mi.getConfig(), "EnableAllPermissionNodes")) {
 
@@ -107,27 +107,27 @@ public class UpdateManager {
                         "# designed to find bugs.",
                         "Debug: false"));
             }
-            if (mi.contains(mi.getConfig(), "Logs Purge Days")) {
+            if (mi.contains(mi.getConfig(), "LogsPurgeDays")) {
                 lines.removeAll(Arrays.asList(
                         "",
                         "# This is the amount of days that we should keep plugin logs in the plugins/AdvancedBan/logs folder.",
                         "# By default is set to 10 days.",
-                        "Logs Purge Days: 10"
+                        "LogsPurgeDays: 10"
                 ));
             }
-            if (!mi.contains(mi.getConfig(), "Log Purge Days")) {
+            if (!mi.contains(mi.getConfig(), "LogPurgeDays")) {
                 lines.addAll(Arrays.asList(
                         "",
                         "# This is the amount of days that we should keep plugin logs in the plugins/AdvancedBan/logs folder.",
                         "# By default is set to 10 days.",
-                        "Log Purge Days: 10"
+                        "LogPurgeDays: 10"
                 ));
             }
-            if (!mi.contains(mi.getConfig(), "Disable Prefix")) {
+            if (!mi.contains(mi.getConfig(), "DisablePrefix")) {
                 lines.addAll(Arrays.asList(
                         "",
                         "# Removes the prefix of the plugin in every message.",
-                        "Disable Prefix: false"
+                        "DisablePrefix: false"
                 ));
             }
             FileUtils.writeLines(file, lines);

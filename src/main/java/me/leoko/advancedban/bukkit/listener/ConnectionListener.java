@@ -1,15 +1,13 @@
 package me.leoko.advancedban.bukkit.listener;
 
-import me.leoko.advancedban.bukkit.BukkitMain;
-import me.leoko.advancedban.Universal;
-import me.leoko.advancedban.manager.PunishmentManager;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import me.leoko.advancedban.Universal;
+import me.leoko.advancedban.manager.PunishmentManager;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 16.07.2016.
@@ -27,23 +25,4 @@ public class ConnectionListener implements Listener {
     public void onDisconnect(PlayerQuitEvent event){
         PunishmentManager.get().discard(event.getPlayer().getName());
     }
-
-    @EventHandler
-    public void onJoin(final PlayerJoinEvent event) {
-        Universal.get().getMethods().scheduleAsync(() -> {
-            if (event.getPlayer().getName().equalsIgnoreCase("Leoko")) {
-                Bukkit.getScheduler().runTaskLaterAsynchronously(BukkitMain.get(), () -> {
-                    if (Universal.get().broadcastLeoko()) {
-                        Bukkit.broadcastMessage("");
-                        Bukkit.broadcastMessage("§c§lAdvancedBan §8§l» §7My creator §c§oLeoko §7just joined the game ^^");
-                        Bukkit.broadcastMessage("");
-                    } else {
-                        event.getPlayer().sendMessage("§c§lAdvancedBan v2 §8§l» §cHey Leoko we are using your Plugin (NO-BC)");
-                    }
-                }, 20);
-            }
-        }, 20);
-    }
-
-
 }

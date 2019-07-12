@@ -46,12 +46,6 @@ public class TestMethods implements MethodInterface {
     }
 
     @Override
-    public String[] getKeys(Object file, String path) {
-        fail("This method has not been setup for tests yet. Edit the me.leoko.advancedban.TestMethods Class! #2");
-        return new String[0];
-    }
-
-    @Override
     public Object getConfig() {
         return null;
     }
@@ -65,11 +59,6 @@ public class TestMethods implements MethodInterface {
     public Object getLayouts() {
         fail("This method has not been setup for tests yet. Edit the me.leoko.advancedban.TestMethods Class! #5");
         return null;
-    }
-
-    @Override
-    public void setupMetrics() {
-        //No metrics for testing needed
     }
 
     @Override
@@ -302,4 +291,19 @@ public class TestMethods implements MethodInterface {
     public boolean isUnitTesting() {
         return true;
     }
+    
+	@Override
+	public File getConfigFile() {
+		return null;
+	}
+
+	@Override
+	public File getMessagesFile() {
+		return null;
+	}
+
+	@Override
+	public File getLayoutsFile() {
+		return null;
+	}
 }

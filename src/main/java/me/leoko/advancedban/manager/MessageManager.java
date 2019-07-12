@@ -19,7 +19,6 @@ public class MessageManager {
             System.out.println("!! Message-Error!\n"
                     + "In order to solve the problem please:"
                     + "\n  - Check the Message.yml-File for any missing or double \" or '"
-                    + "\n  - Visit yamllint.com to  validate your Message.yml"
                     + "\n  - Delete the message file and restart the server");
         } else {
             str = replace(str, parameters).replace('&', '§');
@@ -38,7 +37,6 @@ public class MessageManager {
             System.out.println("!! Message-Error in " + mi.getFileName(file) + "!\n"
                     + "In order to solve the problem please:"
                     + "\n  - Check the " + mi.getFileName(file) + "-File for any missing or double \" or '"
-                    + "\n  - Visit yamllint.com to  validate your " + mi.getFileName(file)
                     + "\n  - Delete the message file and restart the server");
             return null;
         }

@@ -12,11 +12,9 @@ import me.leoko.advancedban.Universal;
 import me.leoko.advancedban.bukkit.event.PunishmentEvent;
 import me.leoko.advancedban.bukkit.event.RevokePunishmentEvent;
 import me.leoko.advancedban.bukkit.listener.CommandReceiver;
-import me.leoko.advancedban.manager.DatabaseManager;
 import me.leoko.advancedban.manager.PunishmentManager;
 import me.leoko.advancedban.manager.UUIDManager;
 import me.leoko.advancedban.utils.Punishment;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -24,9 +22,11 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 23.07.2016.
@@ -72,15 +72,16 @@ public class BukkitMethods implements MethodInterface {
             HttpURLConnection request = (HttpURLConnection) new URL(url).openConnection();
             request.connect();
 
-            JSONParser jp = new JSONParser();
-            JSONObject json = (JSONObject) jp.parse(new InputStreamReader(request.getInputStream()));
+            JsonParser jp = new JsonParser();
+            JsonObject json = (JsonObject) jp.parse(new InputStreamReader(request.getInputStream()));
 
             String[] keys = key.split("\\|");
             for (int i = 0; i < keys.length - 1; i++) {
-                json = (JSONObject) json.get(keys[i]);
+                json = json.getAsJsonObject(keys[i]);
             }
 
-            return json.get(keys[keys.length - 1]).toString();
+            return json.get(keys[keys.length - 1]).toString().replaceAll("\"", "");
+
         } catch (Exception exc) {
             return null;
         }
@@ -89,12 +90,6 @@ public class BukkitMethods implements MethodInterface {
     @Override
     public String getVersion() {
         return ((JavaPlugin) getPlugin()).getDescription().getVersion();
-    }
-
-    @Override
-    public String[] getKeys(Object file, String path) {
-        String[] ss = new String[0];
-        return ((YamlConfiguration) file).getConfigurationSection(path).getKeys(false).toArray(ss);
     }
 
     @Override
@@ -110,12 +105,6 @@ public class BukkitMethods implements MethodInterface {
     @Override
     public Object getLayouts() {
         return layouts;
-    }
-
-    @Override
-    public void setupMetrics() {
-        Metrics metrics = new Metrics((JavaPlugin) getPlugin());
-        metrics.addCustomChart(new Metrics.SimplePie("MySQL", () -> DatabaseManager.get().isUseMySQL() ? "yes" : "no"));
     }
 
     @Override
@@ -148,7 +137,8 @@ public class BukkitMethods implements MethodInterface {
         return ((CommandSender) player).hasPermission(perms);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean isOnline(String name) {
         return Bukkit.getOfflinePlayer(name).isOnline();
     }
@@ -215,7 +205,8 @@ public class BukkitMethods implements MethodInterface {
         return player instanceof OfflinePlayer ? ((OfflinePlayer) player).getUniqueId().toString().replaceAll("-", "") : "none";
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public String getInternUUID(String player) {
         return Bukkit.getOfflinePlayer(player).getUniqueId().toString().replaceAll("-", "");
     }
@@ -270,21 +261,22 @@ public class BukkitMethods implements MethodInterface {
 
     @Override
     public String parseJSON(InputStreamReader json, String key) {
-        try {
-            return ((JSONObject) new JSONParser().parse(json)).get(key).toString();
-        } catch (ParseException | IOException e) {
-            System.out.println("Error -> " + e.getMessage());
+        JsonElement element = new JsonParser().parse(json);
+        if (element instanceof JsonNull) {
             return null;
         }
+        JsonElement obj = ((JsonObject) element).get(key);
+        return obj != null ? obj.toString().replaceAll("\"", "") : null;
     }
 
     @Override
     public String parseJSON(String json, String key) {
-        try {
-            return ((JSONObject) new JSONParser().parse(json)).get(key).toString();
-        } catch (ParseException e) {
+        JsonElement element = new JsonParser().parse(json);
+        if (element instanceof JsonNull) {
             return null;
         }
+        JsonElement obj = ((JsonObject) element).get(key);
+        return obj != null ? obj.toString().replaceAll("\"", "") : null;
     }
 
     @Override
@@ -377,4 +369,19 @@ public class BukkitMethods implements MethodInterface {
     public boolean isUnitTesting() {
         return false;
     }
+
+	@Override
+	public File getConfigFile() {
+		return configFile;
+	}
+
+	@Override
+	public File getMessagesFile() {
+		return messageFile;
+	}
+
+	@Override
+	public File getLayoutsFile() {
+		return layoutFile;
+	}
 }

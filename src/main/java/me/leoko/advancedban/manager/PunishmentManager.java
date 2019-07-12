@@ -225,20 +225,7 @@ public class PunishmentManager {
         }
         return punishments;
     }
-
-//    public long getCalculation(String layout, String name, String uuid) {
-//        long end = TimeManager.getTime();
-//        MethodInterface mi = Universal.get().getMethods();
-//
-//        int i = getCalculationLevel(name, uuid);
-//
-//        List<String> timeLayout = mi.getStringList(mi.getLayouts(), "Time." + layout);
-//        String time = timeLayout.get(timeLayout.size() <= i ? timeLayout.size() - 1 : i);
-//        long toAdd = TimeManager.toMilliSec(time.toLowerCase());
-//        end += toAdd;
-//
-//        return end;
-//    }
+    
     public Punishment getPunishmentFromResultSet(ResultSet rs) throws SQLException {
         return new Punishment(
                 rs.getString("name"),
