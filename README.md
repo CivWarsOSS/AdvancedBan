@@ -9,7 +9,8 @@ AdvancedBan is an All-In-One Punishment-System with warns, tempwarns, mutes, tem
 There is also a PlayerHistory so you can see the players past punishments and 
 the plugin has configurable Time & Message-Layouts which automatically calculate and increase the Punishment-Time for certain reasons.
 AdvancedBan provides also a full Message-File so you can change and translate all messages & a detailed config-file with a lot of useful settings.
-This is a BungeeCord & Bukkit/Spigot & Velocity-Plugin it supports MySQL and Local-File-Storage.
+This is a BungeeCord & Bukkit/Spigot & Velocity-Plugin it supports MySQL and Local-File-Storage.<br>
+Currently supports spigot 1.14, bungeecord 1.12 and velocity 1.0.0
 
 ## API
 To use the API just add the AdvancedBan.jar to your BuildPath and as a dependency in your Plugin.yml
