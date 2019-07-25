@@ -28,7 +28,6 @@ import me.leoko.advancedban.Velocity.command.CommandReceiverVelocity;
 import me.leoko.advancedban.Velocity.event.PunishmentEvent;
 import me.leoko.advancedban.Velocity.event.RevokePunishmentEvent;
 import net.kyori.text.TextComponent;
-import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
 
 /**
  * Created by ironboundred on 08.07.2019.
@@ -44,11 +43,9 @@ public class VelocityMethods implements MethodInterface {
 	private Toml layouts;
 	private Toml mysql;
 	
-    private String server;
     private boolean isProxy;
 
-    public VelocityMethods(String server, boolean isProxy) {
-    	this.server = server;
+    public VelocityMethods(boolean isProxy) {
     	this.isProxy = isProxy;
     }
     
@@ -404,7 +401,7 @@ public class VelocityMethods implements MethodInterface {
 
 	@Override
 	public void log(String msg) {
-		VelocityMain.get().getServer().getConsoleCommandSource().sendMessage(LegacyComponentSerializer.legacy().deserialize(msg, '&'));
+		VelocityMain.get().getLogger().info(msg.replaceAll("&", "§"));
 	}
 
 	@Override
@@ -435,6 +432,6 @@ public class VelocityMethods implements MethodInterface {
 
 	@Override
 	public String getServerType() {
-		return server;
+		return VelocityMain.get().getServer().getVersion().getName();
 	}
 }

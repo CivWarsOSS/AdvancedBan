@@ -44,11 +44,9 @@ public class BukkitMethods implements MethodInterface {
     private YamlConfiguration layouts;
     private YamlConfiguration mysql;
     
-    private String server;
     private boolean isProxy;
     
-    public BukkitMethods(String server, boolean isProxy) {
-    	this.server = server;
+    public BukkitMethods(boolean isProxy) {
     	this.isProxy = isProxy;
     }
 
@@ -373,7 +371,7 @@ public class BukkitMethods implements MethodInterface {
 
     @Override
     public void log(String msg) {
-        Bukkit.getServer().getConsoleSender().sendMessage(msg.replaceAll("&", "§"));
+        BukkitMain.get().getLogger().info(msg.replaceAll("&", "§"));
     }
 
     @Override
@@ -403,6 +401,6 @@ public class BukkitMethods implements MethodInterface {
 
 	@Override
 	public String getServerType() {
-		return server;
+		return BukkitMain.get().getServer().getName();
 	}
 }

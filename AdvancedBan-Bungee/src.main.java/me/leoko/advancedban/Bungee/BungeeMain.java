@@ -11,7 +11,6 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 public class BungeeMain extends Plugin {
-
     private static BungeeMain instance;
 
     public static BungeeMain get() {
@@ -21,7 +20,8 @@ public class BungeeMain extends Plugin {
     @Override
     public void onEnable() {
         instance = this;
-        Universal.get().setup(new BungeeMethods(this.getProxy().getName(), true));
+                
+        Universal.get().setup(new BungeeMethods(true));
         ProxyServer.getInstance().getPluginManager().registerListener(this, new ConnectionListenerBungee());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new ChatListenerBungee());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new InternalListener());

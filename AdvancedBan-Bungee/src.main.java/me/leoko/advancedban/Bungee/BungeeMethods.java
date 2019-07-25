@@ -46,12 +46,9 @@ public class BungeeMethods implements MethodInterface {
     private Configuration layouts;
     private Configuration mysql;
     
-    
-    private String server;
     private boolean isProxy;
     
-    public BungeeMethods(String server, boolean isProxy) {
-    	this.server = server;
+    public BungeeMethods(boolean isProxy) {
     	this.isProxy = isProxy;
     }
 
@@ -398,7 +395,7 @@ public class BungeeMethods implements MethodInterface {
 
     @Override
     public void log(String msg) {
-        ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText(msg.replaceAll("&", "§")));
+        ProxyServer.getInstance().getLogger().info(msg.replaceAll("&", "§"));
     }
 
     @Override
@@ -428,6 +425,6 @@ public class BungeeMethods implements MethodInterface {
 
 	@Override
 	public String getServerType() {
-		return server;
+		return BungeeMain.get().getProxy().getName();
 	}
 }

@@ -1,6 +1,5 @@
 package me.leoko.advancedban.Bukkit;
 
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -23,7 +22,7 @@ public class BukkitMain extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        Universal.get().setup(new BukkitMethods(this.getServer().getName(), false));
+        Universal.get().setup(new BukkitMethods(false));
 
         ConnectionListener connListener = new ConnectionListener();
         this.getServer().getPluginManager().registerEvents(connListener, this);
