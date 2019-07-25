@@ -378,7 +378,7 @@ public class CommandManager {
 				}
 			} else if (cmd.equalsIgnoreCase("advancedban")) {
 				if (args.length == 0) {
-					mi.sendMessage(sender, "§8§l§m-=====§r §c§lAdvancedBan v2 §8§l§m=====-§r ");
+					mi.sendMessage(sender, "§8§l§m-=====§r §c§lAdvancedBan v3 §8§l§m=====-§r ");
 					mi.sendMessage(sender, "  §cDev §8• §7Leoko");
 					mi.sendMessage(sender, "  §cStatus §8• §a§oStable");
 					mi.sendMessage(sender, "  §cVersion §8• §7" + mi.getVersion());
