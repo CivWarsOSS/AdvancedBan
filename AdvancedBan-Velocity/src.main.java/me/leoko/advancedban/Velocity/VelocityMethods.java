@@ -296,10 +296,15 @@ public class VelocityMethods implements MethodInterface {
 	}
 
 	@Override
-	public Object getMySQLFile() {
+	public File getMySQLFile() {
+		return mysqlFile;
+	}
+	
+	@Override
+	public Object getMysql() {
 		return mysql;
 	}
-
+	
 	@Override
 	public String parseJSON(InputStreamReader json, String key) {
         JsonElement element = new JsonParser().parse(json);

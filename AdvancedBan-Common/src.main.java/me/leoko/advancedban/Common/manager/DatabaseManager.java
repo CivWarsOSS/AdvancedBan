@@ -33,7 +33,7 @@ public class DatabaseManager {
 		MethodInterface mi = Universal.get().getMethods();
 
 		if (useMySQLServer) {
-			File file = new File(mi.getDataFolder(), "MySQL.yml");
+			File file = mi.getMySQLFile();
 			boolean createFile = !file.exists();
 
 			if (createFile) {
@@ -51,11 +51,11 @@ public class DatabaseManager {
 				mi.createMySQLFile(file);
 				failedMySQL = true;
 			} else {
-				ip = mi.getString(mi.getMySQLFile(), "MySQL.IP", "Unknown");
-				dbName = mi.getString(mi.getMySQLFile(), "MySQL.DB-Name", "Unknown");
-				usrName = mi.getString(mi.getMySQLFile(), "MySQL.Username", "Unknown");
-				password = mi.getString(mi.getMySQLFile(), "MySQL.Password", "Unknown");
-				port = mi.getInteger(mi.getMySQLFile(), "MySQL.Port", 3306);
+				ip = mi.getString(mi.getMysql(), "MySQL.IP", "Unknown");
+				dbName = mi.getString(mi.getMysql(), "MySQL.DB-Name", "Unknown");
+				usrName = mi.getString(mi.getMysql(), "MySQL.Username", "Unknown");
+				password = mi.getString(mi.getMysql(), "MySQL.Password", "Unknown");
+				port = mi.getInteger(mi.getMysql(), "MySQL.Port", 3306);
 
 				connectMySQLServer();
 			}
@@ -101,14 +101,16 @@ public class DatabaseManager {
 
 	private void connectMySQLServer() {
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + dbName
-					+ "?verifyServerCertificate=false&useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=utf8",
-					usrName, password);
-		} catch (SQLException exc) {
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			
+			connection = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + dbName + "?verifyServerCertificate=false&useSSL=false&useUnicode=true&autoReconnect=true&serverTimezone=UTC&" +
+                    "user=" + usrName + "&password=" + password);
+		} catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException exc) {
 			Universal.get()
-					.log(" \n" + " MySQL-Error\n" + " Could not connect to MySQL-Server!\n" + " Disabling plugin!\n"
-							+ " Check your MySQL.yml\n" + " Skype: Leoko33\n"
-							+ " Issue tracker: https://github.com/DevLeoko/AdvancedBan/issues \n" + " \n");
+					.log(" \n" + " MySQL-Error\n" + " Could not connect to MySQL-Server!\n" + " Using HSQLDB (local)!\n"
+							+ " Check your MySQL Config\n"
+							+ " Issue tracker: https://github.com/ironboundred/AdvancedBan/issues \n" + " \n");
+			Universal.get().log(exc.getMessage());
 			failedMySQL = true;
 		}
 	}
@@ -154,7 +156,7 @@ public class DatabaseManager {
 			Universal.get()
 					.log("An unexpected error has ocurred executing an Statement in the database\n"
 							+ "Please check the plugins/AdvancedBan/logs/latest.log file and report this"
-							+ "error in: https://github.com/DevLeoko/AdvancedBan/issues");
+							+ "error in: https://github.com/ironboundred/AdvancedBan/issues");
 			Universal.get().debug("Query: \n" + sql);
 			Universal.get().debug(ex);
 			return null;

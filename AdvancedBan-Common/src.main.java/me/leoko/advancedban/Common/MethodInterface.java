@@ -74,7 +74,9 @@ public interface MethodInterface {
 
 	void createMySQLFile(File f);
 
-	Object getMySQLFile();
+	File getMySQLFile();
+	
+	Object getMysql();
 
 	String parseJSON(InputStreamReader json, String key);
 

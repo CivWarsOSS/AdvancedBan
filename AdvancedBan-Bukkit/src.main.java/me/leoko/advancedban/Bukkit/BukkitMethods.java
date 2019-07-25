@@ -38,8 +38,9 @@ public class BukkitMethods implements MethodInterface {
 
     private final File messageFile = new File(getDataFolder(), "Messages.yml");
     private final File layoutFile = new File(getDataFolder(), "Layouts.yml");
-    private YamlConfiguration config;
     private File configFile = new File(getDataFolder(), "config.yml");
+    private File mysqlFile = new File(getDataFolder(), "MySQL.yml");
+    private YamlConfiguration config;
     private YamlConfiguration messages;
     private YamlConfiguration layouts;
     private YamlConfiguration mysql;
@@ -251,6 +252,8 @@ public class BukkitMethods implements MethodInterface {
 
     @Override
     public void createMySQLFile(File f) {
+    	mysqlFile = f;
+    	
         mysql.set("MySQL.IP", "localhost");
         mysql.set("MySQL.DB-Name", "YourDatabase");
         mysql.set("MySQL.Username", "root");
@@ -264,9 +267,14 @@ public class BukkitMethods implements MethodInterface {
     }
 
     @Override
-    public Object getMySQLFile() {
-        return mysql;
+    public File getMySQLFile() {
+        return mysqlFile;
     }
+    
+    @Override
+	public Object getMysql() {
+		return mysql;
+	}
 
     @Override
     public String parseJSON(InputStreamReader json, String key) {

@@ -41,6 +41,7 @@ public class BungeeMethods implements MethodInterface {
     private final File configFile = new File(getDataFolder(), "config.yml");
     private final File messageFile = new File(getDataFolder(), "Messages.yml");
     private final File layoutFile = new File(getDataFolder(), "Layouts.yml");
+    private File mysqlFile = new File(getDataFolder(), "MySQL.yml");
     private Configuration config;
     private Configuration messages;
     private Configuration layouts;
@@ -270,6 +271,8 @@ public class BungeeMethods implements MethodInterface {
 
     @Override
     public void createMySQLFile(File file) {
+    	mysqlFile = file;
+    	
         mysql.set("MySQL.IP", "localhost");
         mysql.set("MySQL.DB-Name", "YourDatabase");
         mysql.set("MySQL.Username", "root");
@@ -283,9 +286,14 @@ public class BungeeMethods implements MethodInterface {
     }
 
     @Override
-    public Object getMySQLFile() {
-        return mysql;
+    public File getMySQLFile() {
+        return mysqlFile;
     }
+    
+    @Override
+	public Object getMysql() {
+		return mysql;
+	}
 
     @Override
     public String parseJSON(InputStreamReader json, String key) {
