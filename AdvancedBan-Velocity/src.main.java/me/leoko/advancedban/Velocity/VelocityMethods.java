@@ -289,8 +289,10 @@ public class VelocityMethods implements MethodInterface {
                 } else {
                 	mysqlFile.createNewFile();
                 }
-            } catch (IOException exception) {
-                exception.printStackTrace();
+            } catch (IOException ex) {
+            	Universal.get().log(
+						"§cAn unexpected error has occurred while creating the MySQL file, try restarting the server.");
+				Universal.get().debug(ex.getMessage());
             }
 		}
 	}
