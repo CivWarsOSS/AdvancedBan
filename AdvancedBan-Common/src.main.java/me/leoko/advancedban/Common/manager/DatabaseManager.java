@@ -132,15 +132,12 @@ public class DatabaseManager {
 	}
 
 	public ResultSet executeStatement(String sql, boolean result, Object... parameters) {
-		if(!checkConnection()) {
-			try {
-				connection.isValid(1);
-			} catch (SQLException e) {
-				if(e.getErrorCode() != 0) {
-					//The error was somthing other then connection issue
-					Universal.get().debug(e);
-				}
-			}
+		try {
+			connection.isValid(1);
+		}catch (SQLException ex) {
+			Universal.get().debug("Validation query");
+			Universal.get().debug(ex);
+		return null;
 		}
 		
 		try {
@@ -176,23 +173,6 @@ public class DatabaseManager {
 			Universal.get().debug(ex);
 			return null;
 		}
-	}
-	
-	private boolean checkConnection() {
-		if(!useMySQL) {
-			return true;
-		}
-		
-		try {
-			if(connection != null || !connection.isClosed()) {
-				return true;
-			}
-		} catch (SQLException ex) {
-			Universal.get().log("An unexpected error has occurred with the database.");
-			Universal.get().debug(ex);
-		}
-		
-		return false;
 	}
 
 	public boolean isFailedMySQL() {

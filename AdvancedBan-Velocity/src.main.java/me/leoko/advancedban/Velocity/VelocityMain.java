@@ -22,7 +22,7 @@ import me.leoko.advancedban.Velocity.listener.ConnectionListenerVelocity;
  * Created by ironboundred on 08.07.2019.
  */
 @Plugin(id = "advancedban", name = "AdvancedBan",
-	description = "All-In-One Punishment-System", version = "3.0.8",
+	description = "All-In-One Punishment-System", version = "3.0.9",
 	authors = {"Leoko", "ironboundred"})
 public class VelocityMain {
 	private static VelocityMain instance;
