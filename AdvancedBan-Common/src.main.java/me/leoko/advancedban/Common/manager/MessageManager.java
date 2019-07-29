@@ -17,8 +17,8 @@ public class MessageManager {
 		String str = mi.getString(mi.getMessages(), path);
 		if (str == null) {
 			str = "Failed! See console for details!";
-			System.out.println("!! Message-Error!\n" + "In order to solve the problem please:"
-					+ "\n  - Check the Message.yml-File for any missing or double \" or '"
+			Universal.get().log("!! Message-Error!\n" + "In order to solve the problem please:"
+					+ "\n  - Check the Message-File for any missing or double \" or '"
 					+ "\n  - Delete the message file and restart the server");
 		} else {
 			str = replace(str, parameters).replace('&', '§');
@@ -34,7 +34,7 @@ public class MessageManager {
 			}
 			return list;
 		} else {
-			System.out.println(
+			Universal.get().log(
 					"!! Message-Error in " + mi.getFileName(file) + "!\n" + "In order to solve the problem please:"
 							+ "\n  - Check the " + mi.getFileName(file) + "-File for any missing or double \" or '"
 							+ "\n  - Delete the message file and restart the server");
