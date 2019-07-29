@@ -36,7 +36,7 @@ public class VelocityMethods implements MethodInterface {
 	private final File messageFile = new File(VelocityMain.get().getDataFolder().toString(), "Messages.toml");
 	private final File layoutFile  = new File(VelocityMain.get().getDataFolder().toString(), "Layouts.toml");
 	private final File configFile = new File(VelocityMain.get().getDataFolder().toString(), "config.toml");
-	private final File mysqlFile = new File(VelocityMain.get().getDataFolder().toString(), "mysql.toml");
+	private final File mysqlFile = new File(VelocityMain.get().getDataFolder().toString(), "MySQL.toml");
 	
 	private Toml config;
 	private Toml messages;
@@ -289,8 +289,10 @@ public class VelocityMethods implements MethodInterface {
                 } else {
                 	mysqlFile.createNewFile();
                 }
-            } catch (IOException exception) {
-                exception.printStackTrace();
+            } catch (IOException ex) {
+            	Universal.get().log(
+						"§cAn unexpected error has occurred while creating the MySQL file, try restarting the server.");
+				Universal.get().debug(ex.getMessage());
             }
 		}
 	}

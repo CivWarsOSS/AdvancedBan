@@ -1,12 +1,13 @@
 package me.leoko.advancedban.Common.manager;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.mysql.cj.jdbc.MysqlDataSource;
 
 import me.leoko.advancedban.Common.MethodInterface;
 import me.leoko.advancedban.Common.Universal;
@@ -28,29 +29,33 @@ public class DatabaseManager {
 	public static DatabaseManager get() {
 		return instance == null ? instance = new DatabaseManager() : instance;
 	}
+	
+	private MysqlDataSource getDataSource() throws SQLException {
+		MysqlDataSource dataSource = new MysqlDataSource();
+		dataSource.setServerName(ip);
+		dataSource.setPort(port);
+		dataSource.setDatabaseName(dbName);
+		dataSource.setUser(usrName);
+		dataSource.setPassword(password);
+		dataSource.setAutoReconnect(true);
+		dataSource.setServerTimezone("UTC");
+		dataSource.setReconnectAtTxEnd(true);
+		
+		return dataSource;
+	}
 
 	public void setup(boolean useMySQLServer) {
 		MethodInterface mi = Universal.get().getMethods();
 
 		if (useMySQLServer) {
 			File file = mi.getMySQLFile();
-			boolean createFile = !file.exists();
 
-			if (createFile) {
-				try {
-					file.createNewFile();
-				} catch (IOException ex) {
-					Universal.get().log(
-							"§cAn unexpected error has occurred while creating the MySQL.yml file, try restarting the server.");
-					Universal.get().debug(ex.getMessage());
-				}
-			}
-			mi.loadMySQLFile(file);
-
-			if (createFile) {
+			if (!file.exists()) {
 				mi.createMySQLFile(file);
 				failedMySQL = true;
 			} else {
+				mi.loadMySQLFile(file);
+				
 				ip = mi.getString(mi.getMysql(), "MySQL.IP", "Unknown");
 				dbName = mi.getString(mi.getMysql(), "MySQL.DB-Name", "Unknown");
 				usrName = mi.getString(mi.getMysql(), "MySQL.Username", "Unknown");
@@ -78,7 +83,7 @@ public class DatabaseManager {
 			} catch (SQLException ex) {
 				Universal.get()
 						.log(" \n" + " HSQLDB-Error\n" + " Could not connect to HSQLDB-Server!\n"
-								+ " Disabling plugin!\n" + " Skype: Leoko33\n"
+								+ " Disabling plugin!\n"
 								+ " Issue tracker: https://github.com/DevLeoko/AdvancedBan/issues\n" + " \n");
 			}
 		}
@@ -103,8 +108,7 @@ public class DatabaseManager {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			
-			connection = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + dbName + "?verifyServerCertificate=false&useSSL=false&useUnicode=true&autoReconnect=true&serverTimezone=UTC&" +
-                    "user=" + usrName + "&password=" + password);
+			connection = getDataSource().getConnection();
 		} catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException exc) {
 			Universal.get()
 					.log(" \n" + " MySQL-Error\n" + " Could not connect to MySQL-Server!\n" + " Using HSQLDB (local)!\n"
@@ -128,6 +132,17 @@ public class DatabaseManager {
 	}
 
 	public ResultSet executeStatement(String sql, boolean result, Object... parameters) {
+		if(!checkConnection()) {
+			try {
+				connection.isValid(1);
+			} catch (SQLException e) {
+				if(e.getErrorCode() != 0) {
+					//The error was somthing other then connection issue
+					Universal.get().debug(e);
+				}
+			}
+		}
+		
 		try {
 			PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -162,15 +177,22 @@ public class DatabaseManager {
 			return null;
 		}
 	}
-
-	public boolean isConnectionValid(int timeout) {
+	
+	private boolean checkConnection() {
+		if(!useMySQL) {
+			return true;
+		}
+		
 		try {
-			return connection.isValid(timeout);
+			if(connection != null || !connection.isClosed()) {
+				return true;
+			}
 		} catch (SQLException ex) {
 			Universal.get().log("An unexpected error has occurred with the database.");
 			Universal.get().debug(ex);
-			return false;
 		}
+		
+		return false;
 	}
 
 	public boolean isFailedMySQL() {
