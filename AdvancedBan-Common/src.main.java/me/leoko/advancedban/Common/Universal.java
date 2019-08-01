@@ -95,8 +95,6 @@ public class Universal {
 	}
 
 	public void shutdown() {
-		DatabaseManager.get().shutdown();
-
 		if (mi.getBoolean(mi.getConfig(), "DetailedDisableMessage", true)) {
 			mi.log("\n \n&8[]=====[&7Disabling AdvancedBan&8]=====[]" + "\n&8| &cInformation:"
 					+ "\n&8|   &cName: &7AdvancedBan" + "\n&8|   &cDeveloper: &7Leoko" + "\n&8|   &cVersion: &7"
