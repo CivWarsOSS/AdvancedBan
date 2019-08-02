@@ -4,7 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import me.leoko.advancedban.Common.MethodInterface;
 import me.leoko.advancedban.Common.Universal;
@@ -106,21 +108,17 @@ public class Punishment {
 				getOperator(), getType().name(), getStart(), getEnd(), getCalculation());
 
 		if (getType() != PunishmentType.KICK) {
-			try {
-				DatabaseManager.get().executeStatement(SQLQuery.INSERT_PUNISHMENT, getName(), getUuid(), getReason(),
-						getOperator(), getType().name(), getStart(), getEnd(), getCalculation());
-				ResultSet rs = DatabaseManager.get().executeResultStatement(SQLQuery.SELECT_EXACT_PUNISHMENT, getUuid(),
-						getStart());
-				if (rs.next()) {
-					id = rs.getInt("id");
-				} else {
-					Universal.get().log(
-							"!! No able to update ID of punishment! Please restart the server to resolve this issue!");
-					Universal.get().log("!! Failed at: " + toString());
-				}
-				rs.close();
-			} catch (SQLException ex) {
-				Universal.get().debug(ex);
+			DatabaseManager.get().executeStatement(SQLQuery.INSERT_PUNISHMENT, getName(), getUuid(), getReason(),
+					getOperator(), getType().name(), getStart(), getEnd(), getCalculation());
+			
+			Set<Punishment> set = new HashSet<>(DatabaseManager.get().executeResultStatement(SQLQuery.SELECT_EXACT_PUNISHMENT, getUuid(),
+					getStart()));
+			if (!set.isEmpty()) {
+				id = set.iterator().next().getId();
+			} else {
+				Universal.get().log(
+						"!! No able to update ID of punishment! Please restart the server to resolve this issue!");
+				Universal.get().log("!! Failed at: " + toString());
 			}
 		}
 
@@ -161,6 +159,11 @@ public class Punishment {
 		}
 
 		PunishmentManager.get().getLoadedHistory().add(this);
+		
+		if(!PunishmentManager.get().getLoadedHistory().contains(this)) {
+			Universal.get().debug("Punishment was not cached!");
+			Universal.get().debug(toString());
+		}
 
 		mi.callPunishmentEvent(this);
 	}

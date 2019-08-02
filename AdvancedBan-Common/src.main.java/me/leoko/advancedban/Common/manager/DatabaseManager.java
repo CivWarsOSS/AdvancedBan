@@ -2,15 +2,20 @@ package me.leoko.advancedban.Common.manager;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.hsqldb.jdbc.JDBCDataSource;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import me.leoko.advancedban.Common.MethodInterface;
 import me.leoko.advancedban.Common.Universal;
+import me.leoko.advancedban.Common.utils.Punishment;
+import me.leoko.advancedban.Common.utils.PunishmentType;
 import me.leoko.advancedban.Common.utils.SQLQuery;
 
 public class DatabaseManager {
@@ -20,7 +25,7 @@ public class DatabaseManager {
 	private String usrName;
 	private String password;
 	private int port = 3306;
-	private Connection connection;
+	//private Connection connection;
 	private boolean failedMySQL = false;
 	private boolean useMySQL;
 
@@ -30,7 +35,14 @@ public class DatabaseManager {
 		return instance == null ? instance = new DatabaseManager() : instance;
 	}
 	
-	private MysqlDataSource getDataSource() throws SQLException {
+	private MysqlDataSource getMysqlDataSource() throws SQLException {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+		}catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+			Universal.get().log("§cERROR: failed to load MySQL driver.");
+			Universal.get().debug(ex.getMessage());
+		}
+		
 		MysqlDataSource dataSource = new MysqlDataSource();
 		dataSource.setServerName(ip);
 		dataSource.setPort(port);
@@ -41,6 +53,22 @@ public class DatabaseManager {
 		dataSource.setServerTimezone("UTC");
 		dataSource.setReconnectAtTxEnd(true);
 		
+		return dataSource;
+	}
+	
+	private JDBCDataSource getJDBCDataSource() throws SQLException{
+		try {
+			Class.forName("org.hsqldb.jdbc.JDBCDriver");
+		} catch (ClassNotFoundException ex) {
+			Universal.get().log("§cERROR: failed to load HSQLDB JDBC driver.");
+			Universal.get().debug(ex.getMessage());
+		}
+		
+		MethodInterface mi = Universal.get().getMethods();
+		JDBCDataSource dataSource = new JDBCDataSource();
+		dataSource.setDatabase("jdbc:hsqldb:file:" + mi.getDataFolder().getPath() + "/data/storage");
+		dataSource.setPassword("");
+		dataSource.setUser("SA");
 		return dataSource;
 	}
 
@@ -62,7 +90,17 @@ public class DatabaseManager {
 				password = mi.getString(mi.getMysql(), "MySQL.Password", "Unknown");
 				port = mi.getInteger(mi.getMysql(), "MySQL.Port", 3306);
 
-				connectMySQLServer();
+				try {
+					Connection connection = getMysqlDataSource().getConnection();
+					connection.close();
+				} catch (SQLException exc) {
+					Universal.get()
+					.log(" \n" + " MySQL-Error\n" + " Could not connect to MySQL-Server!\n" + " Using HSQLDB (local)!\n"
+							+ " Check your MySQL Config\n"
+							+ " Issue tracker: https://github.com/ironboundred/AdvancedBan/issues \n" + " \n");
+					Universal.get().log(exc.getMessage());
+					failedMySQL = true;
+				}
 			}
 		}
 
@@ -70,16 +108,8 @@ public class DatabaseManager {
 
 		if (!useMySQL) {
 			try {
-				Class.forName("org.hsqldb.jdbc.JDBCDriver");
-			} catch (ClassNotFoundException ex) {
-				Universal.get().log("§cERROR: failed to load HSQLDB JDBC driver.");
-				Universal.get().debug(ex.getMessage());
-				return;
-			}
-			try {
-				connection = DriverManager.getConnection(
-						"jdbc:hsqldb:file:" + mi.getDataFolder().getPath() + "/data/storage;hsqldb.lock_file=false",
-						"SA", "");
+				Connection connection = getJDBCDataSource().getConnection();
+				connection.close();
 			} catch (SQLException ex) {
 				Universal.get()
 						.log(" \n" + " HSQLDB-Error\n" + " Could not connect to HSQLDB-Server!\n"
@@ -92,86 +122,94 @@ public class DatabaseManager {
 		executeStatement(SQLQuery.CREATE_TABLE_PUNISHMENT_HISTORY);
 	}
 
-	public void shutdown() {
-		try {
-			if (!useMySQL) {
-				connection.prepareStatement("SHUTDOWN").execute();
-				connection.close();
-			}
-		} catch (SQLException ex) {
-			Universal.get().log("An unexpected error has occurred turning off the database");
-			Universal.get().debug(ex);
-		}
-	}
-
-	private void connectMySQLServer() {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			
-			connection = getDataSource().getConnection();
-		} catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException exc) {
-			Universal.get()
-					.log(" \n" + " MySQL-Error\n" + " Could not connect to MySQL-Server!\n" + " Using HSQLDB (local)!\n"
-							+ " Check your MySQL Config\n"
-							+ " Issue tracker: https://github.com/ironboundred/AdvancedBan/issues \n" + " \n");
-			Universal.get().log(exc.getMessage());
-			failedMySQL = true;
-		}
-	}
-
 	public void executeStatement(SQLQuery sql, Object... parameters) {
 		executeStatement(sql, false, parameters);
 	}
 
-	public ResultSet executeResultStatement(SQLQuery sql, Object... parameters) {
+	public Set<Punishment> executeResultStatement(SQLQuery sql, Object... parameters) {
 		return executeStatement(sql, true, parameters);
 	}
 
-	private ResultSet executeStatement(SQLQuery sql, boolean result, Object... parameters) {
+	private Set<Punishment> executeStatement(SQLQuery sql, boolean result, Object... parameters) {
 		return executeStatement(sql.toString(), result, parameters);
 	}
 
-	public ResultSet executeStatement(String sql, boolean result, Object... parameters) {
-		try {
-			connection.isValid(1);
-		}catch (SQLException ex) {
-			Universal.get().debug("Validation query");
-			Universal.get().debug(ex);
-		return null;
-		}
-		
-		try {
-			PreparedStatement statement = connection.prepareStatement(sql);
+	public synchronized Set<Punishment> executeStatement(String sql, boolean result, Object... parameters) {
+		Set<Punishment> punishments = new HashSet<>();
 
-			for (int i = 0; i < parameters.length; i++) {
-				Object obj = parameters[i];
-				if (obj instanceof Integer) {
-					statement.setInt(i + 1, (Integer) obj);
-				} else if (obj instanceof String) {
-					statement.setString(i + 1, (String) obj);
-				} else if (obj instanceof Long) {
-					statement.setLong(i + 1, (Long) obj);
-				} else {
-					statement.setObject(i + 1, obj);
+		if(useMySQL) {
+			try {
+				Connection connection = getMysqlDataSource().getConnection();
+				PreparedStatement statement = connection.prepareStatement(sql);
+				
+				for (int i = 0; i < parameters.length; i++) {
+					Object obj = parameters[i];
+					if (obj instanceof Integer) {
+						statement.setInt(i + 1, (Integer) obj);
+					} else if (obj instanceof String) {
+						statement.setString(i + 1, (String) obj);
+					} else if (obj instanceof Long) {
+						statement.setLong(i + 1, (Long) obj);
+					} else {
+						statement.setObject(i + 1, obj);
+					}
 				}
-			}
 
-			if (result) {
-				ResultSet resultSet = statement.executeQuery();
-				return resultSet;
-			} else {
-				statement.execute();
+				if (result) {
+					punishments = buildResultSet(statement.executeQuery());
+				} else {
+					statement.execute();
+				}
+				
 				statement.close();
+				connection.close();
+			} catch (SQLException ex) {
+			
+				Universal.get()
+						.log("An unexpected error has ocurred executing an Statement in the database\n"
+								+ "Please check the plugins/AdvancedBan/logs/latest.log file and report this"
+								+ "error in: https://github.com/ironboundred/AdvancedBan/issues");
+				Universal.get().debug("Query: \n" + sql);
+				Universal.get().debug(ex);
 			}
-			return null;
-		} catch (SQLException ex) {
-			Universal.get()
-					.log("An unexpected error has ocurred executing an Statement in the database\n"
-							+ "Please check the plugins/AdvancedBan/logs/latest.log file and report this"
-							+ "error in: https://github.com/ironboundred/AdvancedBan/issues");
-			Universal.get().debug("Query: \n" + sql);
-			Universal.get().debug(ex);
-			return null;
+			
+			return punishments;
+		}else {
+			try {
+				Connection connection = getJDBCDataSource().getConnection();
+				PreparedStatement statement = connection.prepareStatement(sql);
+
+				for (int i = 0; i < parameters.length; i++) {
+					Object obj = parameters[i];
+					if (obj instanceof Integer) {
+						statement.setInt(i + 1, (Integer) obj);
+					} else if (obj instanceof String) {
+						statement.setString(i + 1, (String) obj);
+					} else if (obj instanceof Long) {
+						statement.setLong(i + 1, (Long) obj);
+					} else {
+						statement.setObject(i + 1, obj);
+					}
+				}
+
+				if (result) {
+					punishments = buildResultSet(statement.executeQuery());
+				} else {
+					statement.execute();
+				}
+				
+				statement.close();
+				connection.close();
+			} catch (SQLException ex) {
+				Universal.get()
+						.log("An unexpected error has ocurred executing an Statement in the database\n"
+								+ "Please check the plugins/AdvancedBan/logs/latest.log file and report this"
+								+ "error in: https://github.com/ironboundred/AdvancedBan/issues");
+				Universal.get().debug("Query: \n" + sql);
+				Universal.get().debug(ex);
+			}
+			
+			return punishments;
 		}
 	}
 
@@ -181,5 +219,25 @@ public class DatabaseManager {
 
 	public boolean isUseMySQL() {
 		return useMySQL;
+	}
+	
+	private Set<Punishment> buildResultSet(ResultSet rs){
+		Set<Punishment> results = new HashSet<>();
+		
+		try {
+			while(rs.next()) {
+				results.add(new Punishment(rs.getString("name"), rs.getString("uuid"), rs.getString("reason"),
+						rs.getString("operator"), PunishmentType.valueOf(rs.getString("punishmentType")), rs.getLong("start"),
+						rs.getLong("end"), rs.getString("calculation"), rs.getInt("id")));
+			}
+		} catch (SQLException ex) {
+			Universal.get()
+			.log("An unexpected error has ocurred reading results from the database\n"
+					+ "Please check the plugins/AdvancedBan/logs/latest.log file and report this"
+					+ "error in: https://github.com/ironboundred/AdvancedBan/issues");
+			Universal.get().debug(ex);
+		}
+		
+		return results;
 	}
 }
