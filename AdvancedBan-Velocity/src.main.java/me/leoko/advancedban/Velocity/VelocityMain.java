@@ -15,6 +15,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import me.leoko.advancedban.Common.Universal;
 import me.leoko.advancedban.Velocity.listener.ChatListenerVelocity;
 import me.leoko.advancedban.Velocity.listener.ConnectionListenerVelocity;
+import me.leoko.advancedban.Velocity.listener.ProxyReloadVelocity;
 
 
 
@@ -46,6 +47,7 @@ public class VelocityMain {
 		
 		server.getEventManager().register(instance, new ChatListenerVelocity());
 		server.getEventManager().register(instance, new ConnectionListenerVelocity());
+		server.getEventManager().register(instance, new ProxyReloadVelocity());
 	}
 	
 	@Subscribe
