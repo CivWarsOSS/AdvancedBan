@@ -1,6 +1,7 @@
 *.class
 .settings
 .classpath
+.flattened-pom.xml
 bin
 /dependency-reduced-pom.xml
 # Package Files #

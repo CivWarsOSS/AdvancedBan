@@ -6,7 +6,7 @@
   <parent>
       <groupId>me.leoko.advancedban</groupId>
       <artifactId>AdvancedBan</artifactId>
-      <version>3.0.9-SNAPSHOT</version>
+      <version>${revision}</version>
   </parent>
   
   <artifactId>AdvancedBan-Bukkit</artifactId>
@@ -41,7 +41,7 @@
    <dependency>
     	<groupId>me.leoko.advancedban</groupId>
         <artifactId>AdvancedBan-Common</artifactId>
-        <version>3.0.9-SNAPSHOT</version>
+        <version>${project.version}</version>
         <scope>compile</scope>
    </dependency>
   </dependencies>
