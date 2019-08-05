@@ -1,9 +1,5 @@
 package me.leoko.advancedban.Common.manager;
 
-import com.google.common.base.Charsets;
-
-import me.leoko.advancedban.Common.Universal;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,6 +12,10 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.io.FileUtils;
+
+import com.google.common.base.Charsets;
+
+import me.leoko.advancedban.Common.Universal;
 
 /**
  *
