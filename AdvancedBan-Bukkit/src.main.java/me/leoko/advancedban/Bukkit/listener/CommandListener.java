@@ -5,7 +5,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import me.leoko.advancedban.Common.Universal;
+import me.leoko.advancedban.Universal;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 16.07.2016.

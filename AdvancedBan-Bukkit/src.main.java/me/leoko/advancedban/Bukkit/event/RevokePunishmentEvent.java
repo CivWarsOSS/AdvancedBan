@@ -3,7 +3,7 @@ package me.leoko.advancedban.Bukkit.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import me.leoko.advancedban.Common.utils.Punishment;
+import me.leoko.advancedban.utils.Punishment;
 
 /**
  * Event fired when a punishment is revoked

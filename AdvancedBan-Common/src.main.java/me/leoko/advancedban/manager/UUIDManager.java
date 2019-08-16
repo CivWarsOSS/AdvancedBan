@@ -1,4 +1,4 @@
-package me.leoko.advancedban.Common.manager;
+package me.leoko.advancedban.manager;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,10 +7,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Scanner;
 
-import me.leoko.advancedban.Common.MethodInterface;
-import me.leoko.advancedban.Common.Universal;
+import me.leoko.advancedban.MethodInterface;
+import me.leoko.advancedban.Universal;
+
+import java.util.Scanner;
 
 public class UUIDManager {
 	private static UUIDManager instance = null;

@@ -1,4 +1,4 @@
-package me.leoko.advancedban.Common.manager;
+package me.leoko.advancedban.manager;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import me.leoko.advancedban.Common.MethodInterface;
-import me.leoko.advancedban.Common.Universal;
+import me.leoko.advancedban.MethodInterface;
+import me.leoko.advancedban.Universal;
 
 /**
  * Created by Leo on 07.08.2017.

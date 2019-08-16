@@ -11,7 +11,7 @@ import com.velocitypowered.api.command.Command;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 
-import me.leoko.advancedban.Common.manager.CommandManager;
+import me.leoko.advancedban.manager.CommandManager;
 import me.leoko.advancedban.Velocity.VelocityMain;
 
 

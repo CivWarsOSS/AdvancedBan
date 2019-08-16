@@ -1,8 +1,8 @@
-package me.leoko.advancedban.Common.utils;
+package me.leoko.advancedban.utils;
 
 import java.util.Set;
 
-import me.leoko.advancedban.Common.manager.PunishmentManager;
+import me.leoko.advancedban.manager.PunishmentManager;
 
 /**
  * Created by Leo on 04.08.2017.

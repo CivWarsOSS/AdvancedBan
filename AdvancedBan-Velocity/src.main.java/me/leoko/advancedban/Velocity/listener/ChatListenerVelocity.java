@@ -5,7 +5,7 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.event.player.PlayerChatEvent.ChatResult;
 
-import me.leoko.advancedban.Common.Universal;
+import me.leoko.advancedban.Universal;
 
 /**
  * Created by ironboundred on 08.07.2019.

@@ -1,4 +1,4 @@
-package me.leoko.advancedban.Common;
+package me.leoko.advancedban;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,13 +15,13 @@ import org.apache.commons.io.FileUtils;
 import com.google.common.base.Charsets;
 import com.google.gson.Gson;
 
-import me.leoko.advancedban.Common.manager.DatabaseManager;
-import me.leoko.advancedban.Common.manager.LogManager;
-import me.leoko.advancedban.Common.manager.PunishmentManager;
-import me.leoko.advancedban.Common.manager.UUIDManager;
-import me.leoko.advancedban.Common.manager.UpdateManager;
-import me.leoko.advancedban.Common.utils.InterimData;
-import me.leoko.advancedban.Common.utils.Punishment;
+import me.leoko.advancedban.manager.DatabaseManager;
+import me.leoko.advancedban.manager.LogManager;
+import me.leoko.advancedban.manager.PunishmentManager;
+import me.leoko.advancedban.manager.UUIDManager;
+import me.leoko.advancedban.manager.UpdateManager;
+import me.leoko.advancedban.utils.InterimData;
+import me.leoko.advancedban.utils.Punishment;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 23.07.2016.

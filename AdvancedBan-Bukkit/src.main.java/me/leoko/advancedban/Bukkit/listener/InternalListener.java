@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 
 import me.leoko.advancedban.Bukkit.event.PunishmentEvent;
 import me.leoko.advancedban.Bukkit.event.RevokePunishmentEvent;
-import me.leoko.advancedban.Common.utils.PunishmentType;
+import me.leoko.advancedban.utils.PunishmentType;
 
 /**
  *

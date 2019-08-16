@@ -21,14 +21,14 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import me.leoko.advancedban.MethodInterface;
+import me.leoko.advancedban.Universal;
 import me.leoko.advancedban.Bukkit.event.PunishmentEvent;
 import me.leoko.advancedban.Bukkit.event.RevokePunishmentEvent;
 import me.leoko.advancedban.Bukkit.listener.CommandReceiver;
-import me.leoko.advancedban.Common.MethodInterface;
-import me.leoko.advancedban.Common.Universal;
-import me.leoko.advancedban.Common.manager.PunishmentManager;
-import me.leoko.advancedban.Common.manager.UUIDManager;
-import me.leoko.advancedban.Common.utils.Punishment;
+import me.leoko.advancedban.manager.PunishmentManager;
+import me.leoko.advancedban.manager.UUIDManager;
+import me.leoko.advancedban.utils.Punishment;
 
 
 /**

@@ -2,8 +2,8 @@ package me.leoko.advancedban.Bungee.listener;
 
 
 import me.leoko.advancedban.Bungee.BungeeMain;
-import me.leoko.advancedban.Common.Universal;
-import me.leoko.advancedban.Common.utils.PunishmentType;
+import me.leoko.advancedban.Universal;
+import me.leoko.advancedban.utils.PunishmentType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.TabCompleteEvent;

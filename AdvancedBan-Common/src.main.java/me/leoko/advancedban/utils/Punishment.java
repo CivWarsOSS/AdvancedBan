@@ -1,4 +1,4 @@
-package me.leoko.advancedban.Common.utils;
+package me.leoko.advancedban.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -6,12 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import me.leoko.advancedban.Common.MethodInterface;
-import me.leoko.advancedban.Common.Universal;
-import me.leoko.advancedban.Common.manager.DatabaseManager;
-import me.leoko.advancedban.Common.manager.MessageManager;
-import me.leoko.advancedban.Common.manager.PunishmentManager;
-import me.leoko.advancedban.Common.manager.TimeManager;
+import me.leoko.advancedban.MethodInterface;
+import me.leoko.advancedban.Universal;
+import me.leoko.advancedban.manager.DatabaseManager;
+import me.leoko.advancedban.manager.MessageManager;
+import me.leoko.advancedban.manager.PunishmentManager;
+import me.leoko.advancedban.manager.TimeManager;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 30.05.2016.

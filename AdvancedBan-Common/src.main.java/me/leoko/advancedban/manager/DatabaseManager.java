@@ -1,4 +1,4 @@
-package me.leoko.advancedban.Common.manager;
+package me.leoko.advancedban.manager;
 
 import java.io.File;
 import java.sql.Connection;
@@ -12,11 +12,11 @@ import org.hsqldb.jdbc.JDBCDataSource;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import me.leoko.advancedban.Common.MethodInterface;
-import me.leoko.advancedban.Common.Universal;
-import me.leoko.advancedban.Common.utils.Punishment;
-import me.leoko.advancedban.Common.utils.PunishmentType;
-import me.leoko.advancedban.Common.utils.SQLQuery;
+import me.leoko.advancedban.MethodInterface;
+import me.leoko.advancedban.Universal;
+import me.leoko.advancedban.utils.Punishment;
+import me.leoko.advancedban.utils.PunishmentType;
+import me.leoko.advancedban.utils.SQLQuery;
 
 public class DatabaseManager {
 

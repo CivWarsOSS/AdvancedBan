@@ -1,6 +1,6 @@
 package me.leoko.advancedban.Velocity.event;
 
-import me.leoko.advancedban.Common.utils.Punishment;
+import me.leoko.advancedban.utils.Punishment;
 
 public class RevokePunishmentEvent {
     private final Punishment punishment;

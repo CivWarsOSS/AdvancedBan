@@ -1,6 +1,6 @@
-package me.leoko.advancedban.Common.utils;
+package me.leoko.advancedban.utils;
 
-import me.leoko.advancedban.Common.manager.DatabaseManager;
+import me.leoko.advancedban.manager.DatabaseManager;
 
 /**
  * Created by Leo on 29.07.2017.

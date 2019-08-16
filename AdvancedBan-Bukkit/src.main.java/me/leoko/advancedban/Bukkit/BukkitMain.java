@@ -5,11 +5,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.leoko.advancedban.Universal;
 import me.leoko.advancedban.Bukkit.listener.ChatListener;
 import me.leoko.advancedban.Bukkit.listener.CommandListener;
 import me.leoko.advancedban.Bukkit.listener.ConnectionListener;
 import me.leoko.advancedban.Bukkit.listener.InternalListener;
-import me.leoko.advancedban.Common.Universal;
 
 
 public class BukkitMain extends JavaPlugin {

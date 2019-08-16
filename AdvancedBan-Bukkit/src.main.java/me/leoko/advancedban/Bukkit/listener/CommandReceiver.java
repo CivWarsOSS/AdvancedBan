@@ -5,7 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import me.leoko.advancedban.Common.manager.CommandManager;
+import me.leoko.advancedban.manager.CommandManager;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 23.07.2016.

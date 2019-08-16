@@ -1,10 +1,10 @@
-package me.leoko.advancedban.Common.manager;
+package me.leoko.advancedban.manager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.leoko.advancedban.Common.MethodInterface;
-import me.leoko.advancedban.Common.Universal;
+import me.leoko.advancedban.MethodInterface;
+import me.leoko.advancedban.Universal;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 13.07.2016.

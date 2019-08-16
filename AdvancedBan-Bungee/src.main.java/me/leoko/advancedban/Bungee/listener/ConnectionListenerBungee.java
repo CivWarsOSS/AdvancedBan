@@ -3,8 +3,8 @@ package me.leoko.advancedban.Bungee.listener;
 import com.imaginarycode.minecraft.redisbungee.RedisBungee;
 
 import me.leoko.advancedban.Bungee.BungeeMain;
-import me.leoko.advancedban.Common.Universal;
-import me.leoko.advancedban.Common.manager.PunishmentManager;
+import me.leoko.advancedban.Universal;
+import me.leoko.advancedban.manager.PunishmentManager;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;

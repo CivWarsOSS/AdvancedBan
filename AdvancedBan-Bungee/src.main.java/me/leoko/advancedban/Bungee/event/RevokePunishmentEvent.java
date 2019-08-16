@@ -1,6 +1,6 @@
 package me.leoko.advancedban.Bungee.event;
 
-import me.leoko.advancedban.Common.utils.Punishment;
+import me.leoko.advancedban.utils.Punishment;
 import net.md_5.bungee.api.plugin.Event;
 
 /**

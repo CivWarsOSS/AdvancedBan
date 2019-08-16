@@ -6,8 +6,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import me.leoko.advancedban.Common.Universal;
-import me.leoko.advancedban.Common.manager.PunishmentManager;
+import me.leoko.advancedban.Universal;
+import me.leoko.advancedban.manager.PunishmentManager;
 
 
 /**

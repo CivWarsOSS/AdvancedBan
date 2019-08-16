@@ -1,8 +1,8 @@
-package me.leoko.advancedban.Common.manager;
+package me.leoko.advancedban.manager;
 
 import java.util.Date;
 
-import me.leoko.advancedban.Common.Universal;
+import me.leoko.advancedban.Universal;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 12.07.2016.

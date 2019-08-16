@@ -19,11 +19,11 @@ import com.moandjiezana.toml.Toml;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 
-import me.leoko.advancedban.Common.MethodInterface;
-import me.leoko.advancedban.Common.Universal;
-import me.leoko.advancedban.Common.manager.PunishmentManager;
-import me.leoko.advancedban.Common.manager.UUIDManager;
-import me.leoko.advancedban.Common.utils.Punishment;
+import me.leoko.advancedban.MethodInterface;
+import me.leoko.advancedban.Universal;
+import me.leoko.advancedban.manager.PunishmentManager;
+import me.leoko.advancedban.manager.UUIDManager;
+import me.leoko.advancedban.utils.Punishment;
 import me.leoko.advancedban.Velocity.command.CommandReceiverVelocity;
 import me.leoko.advancedban.Velocity.event.PunishmentEvent;
 import me.leoko.advancedban.Velocity.event.RevokePunishmentEvent;

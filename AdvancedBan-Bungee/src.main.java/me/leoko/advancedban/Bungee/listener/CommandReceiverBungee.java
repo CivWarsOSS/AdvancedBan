@@ -2,7 +2,7 @@ package me.leoko.advancedban.Bungee.listener;
 
 
 import me.leoko.advancedban.Bungee.BungeeMain;
-import me.leoko.advancedban.Common.manager.CommandManager;
+import me.leoko.advancedban.manager.CommandManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 

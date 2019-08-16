@@ -6,7 +6,7 @@ import me.leoko.advancedban.Bungee.listener.ChatListenerBungee;
 import me.leoko.advancedban.Bungee.listener.ConnectionListenerBungee;
 import me.leoko.advancedban.Bungee.listener.InternalListener;
 import me.leoko.advancedban.Bungee.listener.PubSubMessageListener;
-import me.leoko.advancedban.Common.Universal;
+import me.leoko.advancedban.Universal;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 

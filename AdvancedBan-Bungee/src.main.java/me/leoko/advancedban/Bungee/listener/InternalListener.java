@@ -8,11 +8,11 @@ import com.google.gson.JsonSyntaxException;
 
 import me.leoko.advancedban.Bungee.event.PunishmentEvent;
 import me.leoko.advancedban.Bungee.event.RevokePunishmentEvent;
-import me.leoko.advancedban.Common.Universal;
-import me.leoko.advancedban.Common.manager.TimeManager;
-import me.leoko.advancedban.Common.manager.UUIDManager;
-import me.leoko.advancedban.Common.utils.Punishment;
-import me.leoko.advancedban.Common.utils.PunishmentType;
+import me.leoko.advancedban.Universal;
+import me.leoko.advancedban.manager.TimeManager;
+import me.leoko.advancedban.manager.UUIDManager;
+import me.leoko.advancedban.utils.Punishment;
+import me.leoko.advancedban.utils.PunishmentType;
 
 import java.util.Arrays;
 import java.util.List;

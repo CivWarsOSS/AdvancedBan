@@ -3,7 +3,7 @@ package me.leoko.advancedban.Velocity.listener;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
 
-import me.leoko.advancedban.Common.Universal;
+import me.leoko.advancedban.Universal;
 import net.kyori.text.TextComponent;
 
 /**

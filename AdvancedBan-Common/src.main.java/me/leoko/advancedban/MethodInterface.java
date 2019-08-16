@@ -1,10 +1,10 @@
-package me.leoko.advancedban.Common;
+package me.leoko.advancedban;
 
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import me.leoko.advancedban.Common.utils.Punishment;
+import me.leoko.advancedban.utils.Punishment;
 
 /**
  * Created by Leoko @ dev.skamps.eu on 23.07.2016.
