@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -140,7 +141,7 @@ public class UUIDManager {
 			}
 		}
 
-		HttpURLConnection request = (HttpURLConnection) new URL(url.replaceAll("%NAME%", name)).openConnection();
+		HttpURLConnection request = (HttpURLConnection) new URL(url.replaceAll("%NAME%", name).replaceAll("%TIMESTAMP%", new Date().getTime() + "")).openConnection();
 		request.connect();
 
 		String uuid = mi.parseJSON(new InputStreamReader(request.getInputStream()), key);

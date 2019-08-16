@@ -14,7 +14,7 @@ public class ConnectionListenerVelocity {
 	public void playerConnect(PostLoginEvent event) {
 		String result = Universal.get().callConnection(event.getPlayer().getUsername(), event.getPlayer().getRemoteAddress().getHostString());
         if (result != null) {
-       	 event.getPlayer().disconnect(TextComponent.builder(result).build());
+        	event.getPlayer().disconnect(TextComponent.builder(result).build());
         }
 	}
 }

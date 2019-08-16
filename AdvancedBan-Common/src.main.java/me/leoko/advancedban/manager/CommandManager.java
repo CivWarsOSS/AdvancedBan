@@ -397,6 +397,7 @@ public class CommandManager {
 					mi.sendMessage(sender, "§8§l§m-=========================-§r ");
 				} else if (lowerArg.equalsIgnoreCase("reload")) {
 					if (Universal.get().hasPerms(sender, "ab.reload")) {
+						PunishmentManager.get().reloadCached();
 						mi.loadFiles();
 						mi.sendMessage(sender, "§a§lAdvancedBan §8§l» §7Reloaded!");
 					} else {

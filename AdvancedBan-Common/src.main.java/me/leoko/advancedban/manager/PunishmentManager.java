@@ -175,4 +175,17 @@ public class PunishmentManager {
 	public Set<Punishment> getLoadedHistory() {
 		return history;
 	}
+	
+	public void reloadCached() {
+		punishments.clear();
+		history.clear();
+		cached.clear();
+		
+		MethodInterface mi = universal.getMethods();
+		
+		for (Object player : mi.getOnlinePlayers()) {
+			String name = mi.getName(player).toLowerCase();
+			load(name, UUIDManager.get().getUUID(name), mi.getIP(player));
+		}
+	}
 }
